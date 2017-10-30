@@ -4,6 +4,6 @@ CREATE TABLE detalle_evaluacion
    proyecto_asignado_id integer,
    calificacion integer,
    status_evaluacion integer,
-   valoracion_evaluacion boolean,
+   valoracion_evaluacion integer,
    CONSTRAINT pk_detalle_evaluacion PRIMARY KEY(detalle_evaluacion_id, proyecto_asignado_id)
 );

@@ -16,7 +16,8 @@ class DB
         $this->link = new PDO(
             "{$this->driver}:host={$this->host};dbname={$this->dbname}",
             $this->user,
-            $this->password
+            $this->password,
+            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
         );
     }
 

@@ -1,0 +1,17 @@
+CREATE OR REPLACE FUNCTION obtener_evaluacion
+()
+RETURNS EVALUACION_STATUS[]
+AS
+$BODY$
+DECLARE
+   i EVALUACION_STATUS[];
+BEGIN
+   SELECT ARRAY(
+      SELECT (id,value)::EVALUACION_STATUS
+      FROM evaluacion_status
+   ) INTO i;
+   --RAISE NOTICE '%',i;
+   RETURN i;
+END;
+$BODY$
+LANGUAGE plpgsql;

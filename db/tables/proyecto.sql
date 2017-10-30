@@ -4,5 +4,6 @@ CREATE TABLE proyecto
    tipo_proyecto_id integer,
    dependencia_id integer,
    proyecto_status_id integer,
+   area_academica_id integer,
    CONSTRAINT pk_proyecto PRIMARY KEY(proyecto_id)
 );
