@@ -4,6 +4,33 @@ class Academico extends Controller
 {
     public function index()
     {
+        $rol_id = 4;
+        $data = [];
+
+        try {
+            $db = DB::getInstance();
+            $link = $db->getLink();
+            $stmt = $link->prepare('SELECT funcion_ui(?)');
+            $stmt->execute([$rol_id]);
+            $pre_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if (count($pre_data) == 0) {
+                $data = 0;
+            } else {
+                foreach ($pre_data as $funcion_ui) {
+                    array_push($data, json_decode($funcion_ui['funcion_ui']));
+                }
+            }
+
+        } catch (PDOException $e) {
+            header('Location: http://tbd.local/academico/');
+            die();
+        }
+
+        $this->view('academico/index', ['data'=>$data]);
+    }
+
+    public function mis_proyectos()
+    {
         $user = $_SESSION['usr']->usuario;
         $proyectos = null;
         $data = [];
@@ -14,7 +41,6 @@ class Academico extends Controller
             $stmt = $link->prepare('SELECT listar_proyectos(?)');
             $stmt->execute([$user]);
             $proyectos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            //var_dump($proyectos);exit;
             if (count($proyectos) == 0) {
                 $data = 0;
             } else {
@@ -26,9 +52,8 @@ class Academico extends Controller
         } catch (PDOException $e) {
             header('Location: http://tbd.local/home/error/');
             die();
-            //var_dump($e);
         }
-        $this->view('academico/index', ['proyectos'=>$data]);
+        $this->view('academico/mis_proyectos', ['proyectos'=>$data]);
     }
 
     public function nuevo_proyecto()

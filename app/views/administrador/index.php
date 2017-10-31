@@ -8,24 +8,17 @@
     <nav>
       <?php include(APP.DS.'app'.DS.'views'.DS.'layout'.DS.'header.php');?>
     </nav>
-    <section><strong>ADMINISTRATOR</strong></section>
+    <section><strong>ROL-ADMINISTRATOR</strong></section>
     <div>
+      <?php if (count($data['data']) == 0 || $data['data'] == 0): ?>
+        <h3>NO TIENES FUNCIONES .. NO PUEDES HACER NADA</h3>
+      <?php else: ?>
       <ul>
-        <?php foreach ($data['data'] as $item) :?>
-        <!--
-        <li><a href="/administrador/usuarios">listar usuarios</a></li>
-        <li><a href="/administrador/eliminar_usuarios">eliminar usuarios</a></li>
-        <li><a href="/administrador/crear_usuario">crear usuario</a></li>
-        <li><a href="/administrador/roles">ROLES</a></li>
-                // f1 funcion_id
-                // f2 ui_id
-                // f3 ui ruta
-        -->
-            <?php if ($item[1]): ?>
-                <li><a href="<?php echo $item[3] ?>"><?php echo $item[2]; ?></a></li>
-            <?php endif; ?>
+        <?php foreach($data['data'] as $funcion): ?>
+          <li><a href="<?php echo $funcion->f2; ?>"><?php echo $funcion->f1; ?></a></li>
         <?php endforeach; ?>
       </ul>
+      <?php endif; ?>
     </div>
   </body>
 </html>

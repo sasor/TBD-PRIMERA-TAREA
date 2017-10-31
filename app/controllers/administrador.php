@@ -4,63 +4,30 @@ class Administrador extends Controller
 {
     public function index()
     {
-        //var_dump($_SESSION);exit;
-        $rol_id = $_SESSION['usr']->rol[0];
-        $uis = [];
+        $rol_id = 1;
         $data = [];
-        $outs = [];
-        $all = [];
 
         try {
             $db = DB::getInstance();
             $link = $db->getLink();
-            $stmt = $link->prepare('SELECT data_rol(?)');
+            $stmt = $link->prepare('SELECT funcion_ui(?)');
             $stmt->execute([$rol_id]);
-            $datas = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            //var_dump($datas);
-            //exit;
-            if (count($datas) == 0) {
+            $pre_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if (count($pre_data) == 0) {
                 $data = 0;
             } else {
-                $stmt2 = $link->prepare('SELECT traer_ui(?)');
-                // f1 funcion_id
-                // f2 ui_id
-                // f3 ui ruta
-                foreach ($datas as $d) {
-                    //var_dump($d);
-                    $std = json_decode($d['data_rol']);
-                    $stmt2->execute([$std->f1]);
-                    $puis = $stmt2->fetchAll(PDO::FETCH_ASSOC);
-                    foreach ($puis as $ui) {
-                        array_push($uis, json_decode($ui['traer_ui']));
-                    }
-                    array_push($data, $std);
+                foreach ($pre_data as $funcion_ui) {
+                    array_push($data, json_decode($funcion_ui['funcion_ui']));
                 }
-                //array_push($outs, ['funciones'=>$data]);
-                //array_push($outs, ['uis'=>$uis]);
-                //var_dump($data);
-                //var_dump($uis);
-                //var_dump($outs);
-                $salida = [];
-                foreach ($data as $funcion) {
-                    $salida = [$funcion->f1, $funcion->f2, $funcion->f3];
-                    foreach ($uis as $ui) {
-                        if ($ui->f1 == $funcion->f1) {
-                            array_push($salida, $ui->f3);
-                        }
-                    }
-                    array_push($all, $salida);
-                }
-                //var_dump($all);
-                //exit;
             }
+
         } catch (PDOException $e) {
             //header('Location: http://tbd.local/administrador/');
             //die();
             var_dump($e);
         }
-        //$this->view('administrador/index', ['funciones'=>$data, 'uis'=>$uis]);
-        $this->view('administrador/index', ['data'=>$all]);
+
+        $this->view('administrador/index', ['data'=>$data]);
     }
 
     public function rol($rol_id)
@@ -207,8 +174,8 @@ class Administrador extends Controller
                 array_push($data, json_decode($role['preparar_usuario']));
             }
         } catch (PDOException $e) {
-            header('Location: http://tbd.local/home/error');
-            die();
+            //header('Location: http://tbd.local/home/error');
+            //die();
             //var_dump($e);
         }
         $this->view('administrador/crear_usuario', ['roles'=>$data]);
@@ -258,9 +225,9 @@ class Administrador extends Controller
             header('Location: http://tbd.local/administrador');
             die();
         } catch (PDOException $e) {
-            header('Location: http://tbd.local/home/error/Error_Insert_User');
-            die();
-            //var_dump($e);
+            //header('Location: http://tbd.local/home/error/Error_Insert_User');
+            //die();
+            var_dump($e);
         }
     }
 
