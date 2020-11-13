@@ -5,10 +5,10 @@ class DB
     private static $instance = null;
     private $link;
 
-    private $dbname = 'login';
+    private $dbname = '';
     private $host = 'localhost';
-    private $user = 'login';
-    private $password = 'gmQuzY2VSJFKTxtu';
+    private $user = '';
+    private $password = '';
     private $driver = 'pgsql';
 
     private function __construct()
